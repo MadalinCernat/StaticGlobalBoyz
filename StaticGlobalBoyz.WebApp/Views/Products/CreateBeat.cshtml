@@ -1,0 +1,97 @@
+﻿@model StaticGlobalBoyz.WebApp.Models.BeatModel
+
+@{
+    ViewData["Title"] = "Upload Beat - Static Global Boyz";
+}
+<div class="text-center text-portocaliu font-weight-bold"><h3>Upload Track</h3></div>
+<hr />
+
+<form asp-action="createbeat" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverUrl" class="control-label"></label>
+                <input asp-for="CoverUrl" class="form-control" />
+                <span asp-validation-for="CoverUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SampleUrl" class="control-label"></label>
+                <input asp-for="SampleUrl" class="form-control" />
+                <span asp-validation-for="SampleUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mp3Price" class="control-label"></label>
+                <input asp-for="Mp3Price" class="form-control" type="number" min="0" value="0" />
+                <span asp-validation-for="Mp3Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WavPrice" class="control-label"></label>
+                <input asp-for="WavPrice" class="form-control" type="number" min="0" value="0" />
+                <span asp-validation-for="WavPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="ZipPrice" class="control-label"></label>
+                <input asp-for="ZipPrice" class="form-control" type="number" min="0" value="0" />
+                <span asp-validation-for="ZipPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExclusivePrice" class="control-label"></label>
+                <input asp-for="ExclusivePrice" class="form-control" type="number" min="0" value="0" />
+                <span asp-validation-for="ExclusivePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bpm" class="control-label"></label>
+                <input asp-for="Bpm" class="form-control" type="number" />
+                <span asp-validation-for="Bpm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Key" class="control-label"></label>
+                <input asp-for="Key" class="form-control" />
+                <span asp-validation-for="Key" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Length" class="control-label"></label>
+                <input asp-for="Length" class="form-control" />
+                <span asp-validation-for="Length" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="ProducerName" class="control-label"></label>
+                <input asp-for="ProducerName" class="form-control" />
+                <span asp-validation-for="ProducerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-controller="administration" asp-action="createtag" class="text-gri">Create Tag</a>
+                <br />
+                <a asp-controller="administration" asp-action="deletetag" class="text-gri">Delete Tag</a>
+            </div>
+            <div>
+                @if (Model.Tags != null)
+                {
+                    @for (int i = 0; i < Model.Tags.Count; i++)
+                    {
+                        <div style="display:flex; align-content:center" class="form-check">
+                            <label asp-for="@Model.Tags[i].Selected" class="form-check-label">@Model.Tags[i].Name</label>
+                            <input type="checkbox" asp-for="@Model.Tags[i].Selected" class="form-check-input" />
+                            <input type="hidden" asp-for="@Model.Tags[i].Id" />
+                            <input type="hidden" asp-for="@Model.Tags[i].Name" />
+                        </div>
+                    }
+                }
+                <div class="col text-center">
+                    <input type="submit" value="Create" class="btn btn-outline-orange" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

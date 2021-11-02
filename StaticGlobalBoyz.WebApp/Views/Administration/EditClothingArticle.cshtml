@@ -1,0 +1,60 @@
+﻿@model ClothingArticleModel
+
+@{
+    ViewData["Title"] = "Edit Clothing - Static Global Boyz";
+}
+
+<h1>Edit Clothing Article</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="editclothingarticle" method="post">
+            <input type="hidden" asp-for="ClothingType.Id" />
+            <input type="hidden" asp-for="ClothingType.Name" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DateUploaded" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="InStock" /> In Stock
+                </label>
+            </div>
+            @for (int i = 0; i < Model.PhotosUrl.Count; i++)
+            {
+                <div class="form-group">
+                    <label class="control-label" asp-for="PhotosUrl[i].Url">Url @i:</label>
+                    <input class="form-control" asp-for="PhotosUrl[i].Url" />
+                </div>
+            }
+            @for (int i = 0; i < Model.AvailableSizes.Count; i++)
+            {
+                <div class="form-check">
+                    <input type="hidden" asp-for="AvailableSizes[i].Id" />
+                    <input type="hidden" asp-for="AvailableSizes[i].Name" />
+                    <input class="form-check-input" asp-for="AvailableSizes[i].Selected" />
+                    <label class="form-check-label" asp-for="AvailableSizes[i].Selected">@Model.AvailableSizes[i].Name</label>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-outline-orange" />
+            </div>
+        </form>
+    </div>
+</div>

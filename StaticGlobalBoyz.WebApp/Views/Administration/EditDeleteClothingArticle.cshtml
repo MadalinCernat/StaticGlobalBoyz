@@ -1,0 +1,54 @@
+﻿@model EditDeleteClothingArticleViewModel
+@{
+    ViewData["Title"] = "Edit / Delete Clothing - Static Global Boyz";
+}
+@foreach (var clothingArticle in Model.Clothes)
+{
+    <form method="post">
+        <div class="card mb-3 bg-negru">
+            <div class="card-body">
+                <input type="hidden" asp-for="ClothingArticleId" value="@clothingArticle.Id" />
+                <h5 class="card-title">Clothing Article Name: @clothingArticle.Title</h5>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-info" asp-action="editclothingarticle" asp-controller="administration" asp-route-id="@clothingArticle.Id" asp-route-title="@clothingArticle.Title.Replace(" ", "-").ToLower()">Edit</a>
+                <span id="confirmDeleteSpan_@clothingArticle.Id" style="display:none">
+                    <span>Are you sure you want to delete?</span>
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <a href="#" class="btn btn-primary"
+                       onclick="confirmDelete('@clothingArticle.Id', false)">No</a>
+                </span>
+                <span id="deleteSpan_@clothingArticle.Id">
+                    <a href="#" class="btn btn-danger"
+                       onclick="confirmDelete('@clothingArticle.Id', true)">Delete</a>
+                </span>
+            </div>
+        </div>
+    </form>
+}
+@section Scripts{
+    <script>
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+    </script>
+    <script>
+        $(window).scroll(function () {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+        $(document).ready(function () {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+        });
+    </script>
+}

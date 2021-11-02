@@ -1,0 +1,53 @@
+﻿@page "/checkoutclothescart"
+@inject IHttpContextAccessor httpContextAccessor
+@if (Clothes != null)
+{
+    if (Clothes.Count() > 0)
+    {
+        <table class="table table-bordered table-hover table-responsive-md text-light">
+            <tr>
+                <th>Name</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Size</th>
+            </tr>
+
+            @foreach (var item in Clothes)
+            {
+                <tr>
+                    <td>
+                        <p>@item.Product.Title</p>
+                    </td>
+                    <td style="height:10%;  width:10%;" align="center"><img src="@item.Product.PhotosUrl[0].Url" style="display:block; width:100%;" /> </td>
+                    <td>@item.Product.Price.ToString("C2")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.Size.Name</td>
+                </tr>
+            }
+            <tr>
+                <td align="right" colspan="8">
+                    @Price.ToString("C2")
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br>
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        Clothes = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        StateHasChanged();
+        return base.OnInitializedAsync();
+    }
+    [Parameter]
+    public List<ClothingArticleItemModel> Clothes { get; set; }
+    decimal Price
+    {
+        get
+        {
+            return Clothes.Sum(item => item.Product.Price * item.Quantity);
+        }
+    }
+}

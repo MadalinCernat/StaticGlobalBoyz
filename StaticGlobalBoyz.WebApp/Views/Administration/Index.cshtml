@@ -1,0 +1,34 @@
+﻿@{ 
+    ViewData["Title"] = "Administration - Static Global Boyz";
+}
+<div class="text-center text-hover-portocaliu">
+    <a asp-action="createrole" asp-controller="administration" class="text-gri">Create Role</a>
+    <br />
+    <a asp-action="listofroles" asp-controller="administration" class="text-gri">List of Roles</a>
+    <hr />
+
+    <a asp-action="createtag" asp-controller="administration" class="text-gri">Create Tag</a>
+    <br />
+    <a asp-action="deletetag" asp-controller="administration" class="text-gri">Delete Tag</a>
+    <hr />
+
+    <a asp-action="createclothingarticle" asp-controller="products" class="text-gri">Create Clothing Article</a>
+    <br />
+    <a asp-action="editdeleteclothingarticle" asp-controller="administration" class="text-gri">Edit / Delete Clothing Article</a>
+    <hr />
+
+    <a asp-action="createbeat" asp-controller="products" class="text-gri">Create Beat</a>
+    <br />
+    <a asp-action="editdeletebeat" asp-controller="administration" class="text-gri">Edit / Delete Beat</a>
+    <hr />
+
+    <a asp-action="orders" asp-controller="administration" class="text-gri">Clothes Orders List</a>
+    <br />
+    <a asp-action="hiddenorders" asp-controller="administration" class="text-gri">Hidden Orders</a>
+    <hr />
+
+    <a asp-action="beatorders" asp-controller="administration" class="text-gri">Beat Orders List</a>
+    <br />
+    <hr />
+    <a asp-action="uploadfile" asp-controller="administration" class="text-gri">Upload File</a>
+</div>

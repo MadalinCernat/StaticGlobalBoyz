@@ -1,0 +1,28 @@
+﻿@model ClothesCartViewModel
+@{
+    ViewData["Title"] = "Clothes Cart - Static Global Boyz";
+}
+
+<h3>Clothes Cart</h3>
+<hr />
+@if (Model.Clothes != null)
+{
+    if (Model.Clothes.Count > 0)
+    {
+        <component type="typeof(Cart)" render-mode="ServerPrerendered" param-Clothes="@Model.Clothes" />
+        <div class="text-center">
+            <a asp-controller="products" asp-action="clothes" class="text-gri">Continue Shopping</a>
+            @if (Convert.ToInt32(Model.Total) > 0)
+            {
+                <p>or</p>
+                <a asp-controller="clothescheckout" asp-action="index" class="text-gri">Proceed to checkout</a>
+            }
+        </div>
+    }
+    else
+    {
+        <h3>The cart is empty</h3>
+    }
+}
+
+

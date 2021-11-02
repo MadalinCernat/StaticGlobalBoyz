@@ -1,0 +1,78 @@
+﻿@model BeatModel
+@{
+    var name = Model.Title;
+    ViewData["Title"] = $"{name} - Static Global Boyz";
+}
+<form method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+    <div class="row mt-4">
+        <div class="col-md-auto">
+            <div class="row">
+                <div class="text-sgb text-portocaliu">StaticGlobalBoyz</div>
+                <img src="@Model.CoverUrl" style="width:300px; height:auto; max-width:100%;"/>
+            </div>
+        </div>
+        <div class="col-md-auto" style="width:30px;">
+        </div>
+        <div class="col-sm" style="margin-left:20px;">
+            <div class="row">
+                <audio src="@Model.SampleUrl" id="player"></audio>
+                <div class="titlu-beat"><i class="fas fa-play-circle text-portocaliu" 
+                                           id="showhide" onclick="playpause()"
+                                           style="font-size: 40px; cursor:pointer; margin-right:10px;"></i>@Model.Title</div>
+            </div>
+            <div class="beat-info-container">
+                <div class="row w-100">
+                    <div class="elem"><div class="beat-info rounded">Time</div> @Model.Length</div>
+                    <div class="elem"><div class="beat-info rounded">Bpm</div> @Model.Bpm</div>
+                    <div class="elem"><i class="far fa-clock" id="beat-info-icon" title="Date Uploaded" style="font-size:20px;"></i> @Model.DateUploaded.ToShortDateString()</div>
+                    <div class="elem"><div class="beat-info rounded">Key</div> @Model.Key</div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col" style="display:inline-block; padding:0px;">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <div class="tag text-gri">#@tag.Name </div>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="optionbox rounded" style="margin-top: 20px;">
+                    <select id="prices" asp-for="Price" class="rounded">
+                        <option value="@Model.Mp3Price">Mp3 - @Model.Mp3Price.ToString("C2")</option>
+                        <option value="@Model.WavPrice">Wav - @Model.WavPrice.ToString("C2")</option>
+                        <option value="@Model.ZipPrice">Zip - @Model.ZipPrice.ToString("C2")</option>
+                        <option value="@Model.ExclusivePrice">Exclusive - @Model.ExclusivePrice.ToString("C2")</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-outline-orange" style="margin-top:20px;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a asp-action="beats" asp-controller="products" class="text-gri back-text"><i class="fas fa-angle-left text-portocaliu" style="font-size:18px;"></i> Back to tracks</a>
+    </div>
+</form>
+
+
+<script>
+    var playing = false;
+    var element = document.getElementById('showhide');
+    function playpause() {
+        if (playing == false) {
+            document.getElementById('player').play();
+            element.classList.remove("fa-play-circle")
+            element.classList.add("fa-pause-circle")
+            playing = true;
+        }
+        else if (playing == true) {
+            document.getElementById('player').pause();
+            element.classList.remove("fa-pause-circle")
+            element.classList.add("fa-play-circle")
+            playing = false;
+        }
+    }
+</script>

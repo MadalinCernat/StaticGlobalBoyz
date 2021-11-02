@@ -1,0 +1,26 @@
+﻿@model StaticGlobalBoyz.WebApp.Models.TagModel
+
+@{
+    ViewData["Title"] = "Create Tag - Static Global Boyz";
+}
+
+<h3>Create Tag</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="createtag">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" />
+                <label asp-for="Name" class="control-label text-portocaliu"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-outline-orange" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

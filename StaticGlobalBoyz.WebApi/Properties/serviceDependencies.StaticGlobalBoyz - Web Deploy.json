@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/StaticGlobalBoyzWebApiapi/apis/StaticGlobalBoyzWebApi",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/staticglobalboyzwebappdbserver/databases/StaticGlobalBoyz.WebApp_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/staticglobalboyzwebappdbserver/databases/StaticGlobalBoyz.WebApp_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:ApplicationDbContextConnection",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

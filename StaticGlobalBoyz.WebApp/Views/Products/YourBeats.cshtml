@@ -1,0 +1,21 @@
+﻿@model YourBeatsViewModel
+@{
+    ViewData["Title"] = "Your beats - Static Global Boyz";
+}
+<div class="card-columns">
+    @foreach (var beat in Model.Beats)
+    {
+    <form method="get">
+        <div class="card bg-negru">
+            <div class="card-title text-portocaliu text-center">@beat.Product.Title (@beat.Product.Format)</div>
+            <div class="card-img"><img src="@beat.Product.CoverUrl" style="width:100%;" /></div>
+            <div class="card-body">
+                <div class="card-text">
+                    Bpm: @beat.Product.Bpm, Key: @beat.Product.Key, Length: @beat.Product.Length
+                </div>
+            </div>
+            <div class="card-footer"><input type="submit" class="btn btn-outline-orange" value="Download" asp-action="downloadbeat" asp-route-id="@beat.Product.Id" asp-route-title="@beat.Product.Title.Replace(" ", "-").ToLower()" asp-route-format="@beat.Product.Format"/></div>
+        </div>
+    </form>
+    }
+</div>

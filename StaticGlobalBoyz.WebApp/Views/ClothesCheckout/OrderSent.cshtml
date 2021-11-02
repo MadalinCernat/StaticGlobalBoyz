@@ -1,0 +1,13 @@
+﻿@model OrderSentViewModel 
+@{
+    ViewData["Title"] = "Thank you!";
+}
+<div class="blockquote text-center">
+    <p class="text-info">Your order has been sent!</p>
+    <p>Order Id : @Model.OrderId</p>
+    <p>Order Subtotal : @Model.OrderSubtotal.ToString("C2")</p>
+    <p>Order Shipping Tax : @Model.OrderShippingTax.ToString("C2")</p>
+    <p><strong>Order Total: @Model.OrderTotal.ToString("C2")</strong></p>
+    <p>Estimated Arrival : @ViewBag.EstimatedArrival.DayOfWeek, @ViewBag.EstimatedArrival.Date.ToString("dd/MM/yyyy")</p>
+    <p>@Model.Date</p>
+</div>

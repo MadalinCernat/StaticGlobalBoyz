@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Beats Cart - Static Global Boyz";
+}
+
+<h3>Beats Cart</h3>
+<hr />
+@if (ViewBag.Cart != null)
+{
+    <table class="table table-bordered table-responsive-md text-light">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Photo</th>
+            <th>Price</th>
+            <th>Format</th>
+        </tr>
+
+        @foreach (var item in ViewBag.Cart)
+        {
+            <tr>
+                <td><a asp-controller="beatscart" asp-action="removebeatfromcart" asp-route-id="@item.Product.Id" class="btn btn-dark btn-outline-orange">Remove</a></td>
+                <td><a class="text-gri" asp-controller="products" asp-action="beatdetails" asp-route-id="@item.Product.Id" asp-route-title="@item.Product.Title.Replace(" ", "-").ToLower()">@item.Product.Title</a></td>
+                <td><img src="@item.Product.CoverUrl" width="60" /> </td>
+                <td>@item.Product.Price.ToString("C2")</td>
+                <td>@item.Product.Format</td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="6">
+                @ViewBag.Total.ToString("C2")
+            </td>
+        </tr>
+    </table>
+    <div class="text-center">
+        <a asp-controller="products" asp-action="beats" class="text-gri">Continue Shopping</a>
+        @if (Convert.ToInt32(ViewBag.Total) > 0)
+        {
+            <p>or</p>
+            <a asp-controller="beatscheckout" asp-action="index" class="text-gri">Proceed to checkout</a>
+        }
+    </div>
+}
+else
+{
+    <h3>The cart is empty</h3>
+}
+<br>

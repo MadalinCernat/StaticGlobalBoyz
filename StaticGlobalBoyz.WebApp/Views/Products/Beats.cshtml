@@ -1,0 +1,23 @@
+﻿@model List<BeatModel>
+@{
+    ViewData["Title"] = "Tracks - Static Global Boyz";
+}
+<div class="card-columns">
+    @foreach (var beat in Model)
+    {
+        <div class="card bg-negru text-center" style="border:none; margin-top:30px;">
+            <div class="card-title text-center">@beat.Title</div>
+            <a asp-action="beatdetails" asp-controller="products"
+               asp-route-id="@beat.Id" asp-route-title="@beat.Title.Replace(" ", "-").ToLower()">
+                <img src="@beat.CoverUrl" style="max-width:100%; height:300px; width:300px;" />
+            </a>
+            <div class="card-text text-gri">From @beat.Mp3Price.ToString("C2")</div>
+            <div class="text-center bg-negru">
+                <a asp-action="beatdetails" asp-controller="products"
+                   asp-route-id="@beat.Id" asp-route-title="@beat.Title.Replace(" ", "-").ToLower()" class="btn btn-outline-orange">
+                    Details
+                </a>
+            </div>
+        </div>
+    }
+</div>

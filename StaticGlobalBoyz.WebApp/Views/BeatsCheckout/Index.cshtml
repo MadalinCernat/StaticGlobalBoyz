@@ -1,0 +1,35 @@
+﻿@model BeatsCheckoutIndexViewModel 
+@using Microsoft.Extensions.Options
+@inject IOptions<StaticGlobalBoyz.WebApp.Data.StripeSettings> Stripe
+@{
+    ViewData["Title"] = "Checkout - Static Global Boyz";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    if (ViewBag.Total > 0)
+    {
+        <div class="text-center">
+            <form asp-action="processing" asp-controller="beatscheckout" method="post">
+                <input type="hidden" asp-for="@Model.Total" />
+                <article>
+                    <label>Amount: $@Math.Round(Model.DollarAmount, 2)</label>
+                </article>
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="@Stripe.Value.PublishableKey"
+                        data-amount="@Model.Total"
+                        data-name="[StaticGlobalBoyz]"
+                        data-description="Beat payments"
+                        data-image="https://i.ibb.co/prg3N6h/logo-sgb-3.png"
+                        data-locale="en"
+                        data-zip-code="true">
+                </script>
+            </form>
+        </div>
+    }
+}
+else
+{
+    <div class="text-center">
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-orange">Login</a>
+    </div>
+}

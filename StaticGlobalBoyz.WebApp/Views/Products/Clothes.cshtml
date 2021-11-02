@@ -1,0 +1,25 @@
+﻿@model List<ClothingArticleModel>
+@{
+    ViewData["Title"] = "Clothes - Static Global Boyz";
+}
+
+
+<div class="card-columns">
+    @foreach (var clothingArticle in Model)
+    {
+    <div class="card bg-negru text-center" style="margin-top: 30px;">
+        <div class="card-title text-center">@clothingArticle.Title</div>
+        <a asp-action="clothingarticledetails" asp-controller="products"
+           asp-route-id="@clothingArticle.Id" asp-route-title="@clothingArticle.Title.Replace(" ", "-").ToLower()">
+            <img src="@clothingArticle.PhotosUrl[0].Url" style="max-width:100%; height:400px; width:300px;"  />
+        </a>
+        <div class="card-text text-gri">@clothingArticle.Price.ToString("C2")</div>
+        <div class="text-center bg-negru">
+            <a asp-action="clothingarticledetails" asp-controller="products"
+               asp-route-id="@clothingArticle.Id" asp-route-title="@clothingArticle.Title.Replace(" ", "-").ToLower()" class="btn btn-outline-orange">
+                Details
+            </a>
+        </div>
+    </div>
+    }
+</div>

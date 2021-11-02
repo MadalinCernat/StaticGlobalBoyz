@@ -1,0 +1,33 @@
+﻿@model List<OrderModel>
+@{
+    ViewData["Title"] = "Hidden Orders - Static Global Boyz";
+}
+<h3>Hidden orders:</h3>
+@for (int j = 0; j < Model.Count; j++)
+{
+    <div class="card bg-negru text-light">
+        <div class="card-header card-text">
+            <a data-toggle="collapse" href="#collapse-@j" aria-expanded="true" aria-controls="collapse-@j" id="heading-@j" class="d-block">
+                <i class="fa fa-chevron-down pull-right"></i>
+                Order @Model[j].Id (@Model[j].Date.ToShortDateString() - @Model[j].Address.FirstName @Model[j].Address.LastName)
+            </a>
+        </div>
+        <div id="collapse-@j" class="collapse show" aria-labelledby="heading-@j">
+            <div class="card-body card-text">
+                <h6>Items:</h6>
+                @for (int i = 1; i <= Model[j].Items.Count; i++)
+                {
+                    <p>@i. @Model[j].Items[i - 1].Product.Title (@Model[j].Items[i - 1].Product.Size.Name) - @Model[j].Items[i - 1].Quantity</p>
+                }
+                <h6>Name: @Model[j].Address.FirstName @Model[j].Address.LastName</h6>
+                <h6>Email: @Model[j].Address.EmailAddress</h6>
+                <h6>Phone: @Model[j].Address.PhoneNumber</h6>
+                <h6>str: @Model[j].Address.StreetAddress, city: @Model[j].Address.City, county: @Model[j].Address.County, zip: @Model[j].Address.ZipCode</h6>
+                <h6>Total Price: @Model[j].Subtotal.ToString("C2")</h6>
+            </div>
+            <div class="card-footer">
+                <h6>status: <strong>@Model[j].Status</strong>,<br /> payment method: @Model[j].PaymentMethod, <br />date: @Model[j].Date</h6>
+            </div>
+        </div>
+    </div>
+}

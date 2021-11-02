@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Processing Order - Static Global Boyz";
+}
+<div class="text-center">
+    <form asp-action="processing" asp-controller="clothescheckout" method="post">
+        <label class="text-info">Your Payment has been successfully processed</label>
+        <br />
+        <br />
+        <p class="blockquote text-center">
+            The details of the transaction are  <br />
+            Customer : @ViewBag.Customer <br />
+            Amount : $@ViewBag.AmountPaid
+        </p>
+    </form>
+</div>

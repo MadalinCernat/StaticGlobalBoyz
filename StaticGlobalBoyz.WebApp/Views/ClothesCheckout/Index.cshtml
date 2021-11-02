@@ -1,0 +1,135 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "Checkout - Static Global Boyz";
+}
+@if (Model.Order != null)
+{
+    if (Model.Order.Items.Count() > 0)
+    {
+        <component type="typeof(CheckoutCart)" render-mode="Server" param-Clothes="@Model.Order.Items" />
+        <form method="post">
+            <div class="row">
+                <div class="col">
+                    <input type="hidden" asp-for="Order.Id" />
+                    <input type="hidden" asp-for="Order.UserId" />
+                    <input type="hidden" asp-for="Order.Date" />
+                    @if (Model.HasOrderedBefore)
+                    {
+                        <input type="hidden" asp-for="HasOrderedBefore" />
+                        <label asp-for="Order.UseLastAddress"></label>
+                        <input type="checkbox" asp-for="Order.UseLastAddress" onchange="disableTextBoxes()" />
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.FirstName" class="control-label"></label>
+                        <input asp-for="Order.Address.FirstName" class="form-control" id="firstName" />
+                        <span asp-validation-for="Order.Address.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.LastName" class="control-label"></label>
+                        <input asp-for="Order.Address.LastName" class="form-control" id="lastName" />
+                        <span asp-validation-for="Order.Address.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.StreetAddress" class="control-label"></label>
+                        <input asp-for="Order.Address.StreetAddress" class="form-control" id="streetAddress" />
+                        <span asp-validation-for="Order.Address.StreetAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.City" class="control-label"></label>
+                        <input asp-for="Order.Address.City" class="form-control" id="city" />
+                        <span asp-validation-for="Order.Address.City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Order.Address.County" class="control-label"></label>
+                        <input asp-for="Order.Address.County" class="form-control" id="county" />
+                        <span asp-validation-for="Order.Address.County" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.ZipCode" class="control-label"></label>
+                        <input asp-for="Order.Address.ZipCode" class="form-control" id="zipCode" />
+                        <span asp-validation-for="Order.Address.ZipCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.EmailAddress" class="control-label">@Html.DisplayNameFor(model => model.Order.Address.EmailAddress) *</label>
+                        <input asp-for="Order.Address.EmailAddress" class="form-control" id="emailAddress" />
+                        <span asp-validation-for="Order.Address.EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Order.Address.PhoneNumber" class="control-label"></label>
+                        <input asp-for="Order.Address.PhoneNumber" class="form-control" id="phoneNumber" />
+                        <span asp-validation-for="Order.Address.PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="CountryCode"></label>
+                        <select asp-for="CountryCode" class="custom-select">
+                            <option value="RO" selected>Romania - Free Shipping</option>
+                            @foreach (var country in Model.Countries)
+                            {
+                                <option value="@country.Code">@country.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Online(Stripe)</label>
+                        <input asp-for="Order.PaymentMethod" type="radio" value="stripe" checked />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Cash On Delivery</label>
+                        <input asp-for="Order.PaymentMethod" type="radio" value="cash-on-delivery" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Continue" class="btn btn-primary" />
+                    </div>
+                </div>
+                <div class="col"></div>
+                </div>
+        </form>
+        <br>
+        <p>* - leave empty to use the email address you are registered with.</p>
+    }
+}
+
+@section Scripts{
+    <script>
+        var unchecked = false;
+        function disableTextBoxes() {
+
+            if (unchecked == false) {
+                unchecked = true;
+                document.getElementById("firstName").disabled = true;
+                document.getElementById("lastName").disabled = true;
+                document.getElementById("streetAddress").disabled = true;
+                document.getElementById("city").disabled = true;
+                document.getElementById("county").disabled = true;
+                document.getElementById("zipCode").disabled = true;
+                document.getElementById("emailAddress").disabled = true;
+                document.getElementById("phoneNumber").disabled = true;
+            }
+            else {
+                unchecked = false;
+                document.getElementById("firstName").disabled = false;
+                document.getElementById("lastName").disabled = false;
+                document.getElementById("streetAddress").disabled = false;
+                document.getElementById("city").disabled = false;
+                document.getElementById("county").disabled = false;
+                document.getElementById("zipCode").disabled = false;
+                document.getElementById("emailAddress").disabled = false;
+                document.getElementById("phoneNumber").disabled = false;
+            }
+        }
+    </script>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

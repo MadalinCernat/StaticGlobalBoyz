@@ -1,0 +1,30 @@
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<StaticGlobalBoyz.WebApp.Data.StripeSettings> Stripe
+@{
+    ViewData["Title"] = "Pay - Static Global Boyz";
+}
+@model Guid
+<div class="text-portocaliu text-center">Order @Model</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="text-center">
+        <form asp-action="processing" asp-controller="clothescheckout" asp-route-orderId="@Model" method="post">
+            <article>
+                <label>Amount: $@Math.Round(@ViewBag.DollarAmount, 2)</label>
+            </article>
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="@Stripe.Value.PublishableKey"
+                    data-amount="@ViewBag.Total"
+                    data-name="[StaticGlobalBoyz]"
+                    data-description="Clothes payments"
+                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                    data-locale="en"
+                    data-zip-code="true">
+            </script>
+        </form>
+    </div>
+}
+else
+{
+    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-dark">Login</a> 
+}

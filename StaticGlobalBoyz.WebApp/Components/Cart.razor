@@ -1,0 +1,125 @@
+﻿@page "/clothescart"
+@inject MongoDbDataAccess _db
+@inject IHttpContextAccessor httpContextAccessor
+@if (Clothes != null)
+{
+    <table class="table table-bordered table-hover table-responsive-md text-light">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Photo</th>
+            <th>Price</th>
+            <th></th>
+            <th>Quantity</th>
+            <th></th>
+            <th>Size</th>
+        </tr>
+
+        @foreach (var item in Clothes)
+        {
+            <tr>
+                <td align="center">
+                    <button @onclick="@(e => RemoveClothingArticleFromCart(item.Product.Id, item.Product.Size.Id))" class="btn btn-dark btn-outline-orange"><i class="fas fa-window-close"></i></button>
+                </td>
+                <td>
+                    <a href="clothes/@item.Product.Title/@item.Product.Id" class="text-light">@item.Product.Title</a>
+                </td>
+                <td style="height:10%;  width:10%;" align="center"><img src="@item.Product.PhotosUrl[0].Url" style="display:block; width:100%;" /> </td>
+                <td>@item.Product.Price.ToString("C2")</td>
+                <td>
+                    <a class="btn btn-dark btn-outline-danger btn-3d bg-negru" @onclick="@(e => RemoveOneClothingArticleFromCart(item.Product.Id, item.Product.Size.Id))" style="cursor:pointer;"><i class="fas fa-minus-square"></i></a>
+                </td>
+                <td>@item.Quantity</td>
+                <td>
+                    <a class="btn btn-dark btn-outline-success btn-3d bg-negru" @onclick="@(e => AddOneClothingArticleToCart(item.Product.Id, item.Product.Size.Id))" style="cursor:pointer;"><i class="fas fa-plus-square"></i></a>
+                </td>
+                <td>@item.Product.Size.Name</td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="8">
+                @Price.ToString("C2")
+            </td>
+        </tr>
+    </table>
+}
+<br>
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        Clothes = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        StateHasChanged();
+        return base.OnInitializedAsync();
+    }
+    [Parameter]
+    public List<ClothingArticleItemModel> Clothes { get; set; }
+    decimal Price
+    {
+        get
+        {
+            try
+            {
+                return Clothes.Sum(item => item.Product.Price * item.Quantity);
+            }
+            catch
+            {
+                return decimal.Zero;
+            }
+        }
+    }
+    public void RemoveClothingArticleFromCart(Guid id, Guid sizeId)
+    {
+        List<ClothingArticleItemModel> cart = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        int index = ClothingArticleExists(id, sizeId);
+        cart.RemoveAt(index);
+        SessionHelper.SetObjectAsJson(httpContextAccessor.HttpContext.Session, "clothesCart", cart);
+        Clothes = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        if (cart.Count() == 0)
+        {
+            cart = null;
+            SessionHelper.SetObjectAsJson(httpContextAccessor.HttpContext.Session, "clothesCart", cart);
+        }
+        StateHasChanged();
+    }
+
+    public void RemoveOneClothingArticleFromCart(Guid id, Guid sizeId)
+    {
+        List<ClothingArticleItemModel> cart = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        int index = ClothingArticleExists(id, sizeId);
+        cart[index].Quantity--;
+        if (cart[index].Quantity == 0)
+        {
+            RemoveClothingArticleFromCart(id, sizeId);
+            return;
+        }
+        SessionHelper.SetObjectAsJson(httpContextAccessor.HttpContext.Session, "clothesCart", cart);
+        Clothes = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        StateHasChanged();
+    }
+
+    public void AddOneClothingArticleToCart(Guid id, Guid sizeId)
+    {
+        List<ClothingArticleItemModel> cart = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        int index = ClothingArticleExists(id, sizeId);
+        if (cart[index].Quantity < 10)
+        {
+            cart[index].Quantity++;
+            SessionHelper.SetObjectAsJson(httpContextAccessor.HttpContext.Session, "clothesCart", cart);
+            Clothes = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+            StateHasChanged();
+        }
+        else return;
+    }
+    private int ClothingArticleExists(Guid id, Guid sizeId)
+    {
+        List<ClothingArticleItemModel> cart = SessionHelper.GetObjectFromJson<List<ClothingArticleItemModel>>(httpContextAccessor.HttpContext.Session, "clothesCart");
+        for (int i = 0; i < cart.Count; i++)
+        {
+            if (cart[i].Product.Id.Equals(id) && cart[i].Product.Size.Id.Equals(sizeId))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+}

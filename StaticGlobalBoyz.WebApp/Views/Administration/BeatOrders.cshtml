@@ -1,0 +1,74 @@
+﻿@model BeatOrdersViewModel
+@{
+    ViewData["Title"] = "Beat Orders - Static Global Boyz";
+}
+@for (int j = 0; j < Model.Orders.Count; j++)
+{
+    @if (!Model.Orders[j].Status.Equals("hidden"))
+    {
+        <form method="post">
+            <input type="hidden" asp-for="OrderId" value="@Model.Orders[j].Id" />
+            <div class="card bg-negru text-light">
+                <div class="card-header card-text">
+                    <a data-toggle="collapse" href="#collapse-@j" aria-expanded="true" aria-controls="collapse-@j" id="heading-@j" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Order @Model.Orders[j].Id (@Model.Orders[j].Date.ToShortDateString())
+                    </a>
+                </div>
+                <div id="collapse-@j" class="collapse show" aria-labelledby="heading-@j">
+                    <div class="card-body card-text">
+                        <h6>Items:</h6>
+                        @for (int i = 1; i <= Model.Orders[j].Items.Count; i++)
+                        {
+                            <p>@i. @Model.Orders[j].Items[i - 1].Product.Title (@Model.Orders[j].Items[i - 1].Product.Format) - @Model.Orders[j].Items[i - 1].Quantity</p>
+                        }
+                        <h6>Total Price: @Model.Orders[j].Total.ToString("C2")</h6>
+                    </div>
+                    <div class="card-footer">
+                        <h6>status: <strong>@Model.Orders[j].Status</strong>, <br />date: @Model.Orders[j].Date</h6>
+                        @if (Model.Orders[j].Status.Equals("paid"))
+                        {
+                            <input type="submit" value="Deliver" class="btn btn-success" formaction="MarkBeatAsDelivered" />
+                        }
+                        <span id="confirmDeleteForeverSpan_@Model.Orders[j].Id" style="display:none">
+                            <span>Are you sure you want to delete?</span>
+                            <button type="submit" class="btn btn-danger" formaction="DeleteBeatForever">Yes</button>
+                            <a class="btn btn-primary text-light"
+                               onclick="confirmDeleteForever('@Model.Orders[j].Id', false)">No</a>
+                        </span>
+                        <span id="deleteForeverSpan_@Model.Orders[j].Id">
+                            <a class="btn btn-danger text-light"
+                               onclick="confirmDeleteForever('@Model.Orders[j].Id', true)">
+                                Delete Forever
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+}
+<script>
+    function confirmDeleteForever(uniqueId, isDeleteClicked) {
+        var deleteForeverSpan = 'deleteForeverSpan_' + uniqueId;
+        var confirmDeleteForeverSpan = 'confirmDeleteForeverSpan_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteForeverSpan).hide();
+            $('#' + confirmDeleteForeverSpan).show();
+        } else {
+            $('#' + deleteForeverSpan).show();
+            $('#' + confirmDeleteForeverSpan).hide();
+        }
+    }
+</script>
+<script>
+    $(window).scroll(function () {
+        sessionStorage.scrollTop = $(this).scrollTop();
+    });
+    $(document).ready(function () {
+        if (sessionStorage.scrollTop != "undefined") {
+            $(window).scrollTop(sessionStorage.scrollTop);
+        }
+    });
+</script>

@@ -1,0 +1,91 @@
+﻿@model ClothingArticleModel
+
+@{
+    ViewData["Title"] = "Create Clothing Article - Static Global Boyz";
+}
+
+<div class="text-center text-portocaliu"><h3>Upload Clothing</h3></div>
+<hr />
+
+<form asp-action="createclothingarticle" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" min="1" value="1" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            @if (Model != null)
+            {
+                <div class="optionbox">
+                    <select id="clothingTypes" asp-for="@Model.ClothingType.Name">
+                        @for (int i = 0; i < Model.ClothingTypes.Count; i++)
+                        {
+                            <option>@Model.ClothingTypes[i].Name</option>
+                        }
+                    </select>
+                </div>
+            }
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <button onclick="addUrl()" type="button" class="btn btn-outline-orange">Add Url</button>
+            <button onclick="deleteUrl()" type="button" class="btn btn-outline-orange">Delete Url</button>
+            <table id="AddItemsTable">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PhotosUrl)</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+            <div style="margin-top:10px;">
+                <input type="submit" value="Create" class="btn btn-outline-orange" />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        window.onload = function () {
+            addUrl();
+            addUrl();
+        }
+        var counter = 0;
+        function addUrl() {
+            if (counter < 7) {
+                var table = document.getElementById("AddItemsTable");
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = '<label name="PhotosUrl[' + counter + '].Url" class="control-label">Photo Url ' + counter +'</label><input type="text" name="PhotosUrl[' + counter + '].Url" class="form-control"/>';
+            }
+            else return;
+            counter++;
+        }
+        function deleteUrl() {
+            if (counter > 0) {
+                var table = document.getElementById("AddItemsTable");
+                table.deleteRow(-1);
+                counter--;
+            }
+        }
+    </script>
+}
