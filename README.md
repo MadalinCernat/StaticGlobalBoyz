@@ -4,7 +4,7 @@ Full-stack e-commerce web application.
 
 Purpose: selling beats and clothes for a small brand.
 
-Functionalities: shopping cart, online payment, order management, upload and download files, google and facebook authentication, email system, authorization and administration pages.
+Functionalities: shopping cart, online payment, order management, upload and download files, google and facebook authentication, email system, authorization and administration pages, responsive web design
 
 ## Home page
 ![Home page](https://i.imgur.com/ATSJuyM.png "Home page") 
